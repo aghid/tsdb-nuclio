@@ -12,8 +12,12 @@ ingest:
 query:
 	cd functions/query && docker build --build-arg NUCLIO_BUILD_OFFLINE=$(NUCLIO_BUILD_OFFLINE) -t tsdb-query:$(TSDB_TAG) .
 
+.PHONY: kv-tsdb
+kv-tsdb:
+        cd functions/kv-tsdb && docker build --build-arg NUCLIO_BUILD_OFFLINE=$(NUCLIO_BUILD_OFFLINE) -t kv-tsdb-query:$(TSDB_TAG) .
+
 .PHONY: tsdb
-build: ingest query
+build: ingest query kv-tsdb
 	@echo Done
 
 .PHONY: push
@@ -22,3 +26,5 @@ push:
 	docker push $(TSDB_DOCKER_REPO)/tsdb-ingest:$(TSDB_TAG)
 	docker tag tsdb-query:$(TSDB_TAG) $(TSDB_DOCKER_REPO)/tsdb-query:$(TSDB_TAG)
 	docker push $(TSDB_DOCKER_REPO)/tsdb-query:$(TSDB_TAG)
+        docker tag kv-tsdb-query:$(TSDB_TAG) $(TSDB_DOCKER_REPO)/kv-tsdb-query:$(TSDB_TAG)
+        docker push $(TSDB_DOCKER_REPO)/kv-tsdb-query:$(TSDB_TAG)
