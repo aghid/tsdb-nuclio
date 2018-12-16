@@ -14,7 +14,7 @@ query:
 
 .PHONY: query-kv
 query-kv:
-        cd functions/query-kv-tsdb && docker build --build-arg NUCLIO_BUILD_OFFLINE=$(NUCLIO_BUILD_OFFLINE) -t tsdb-query-kv:$(TSDB_TAG) .
+	cd functions/query-kv && docker build --build-arg NUCLIO_BUILD_OFFLINE=$(NUCLIO_BUILD_OFFLINE) -t tsdb-query-kv:$(TSDB_TAG) .
 
 .PHONY: tsdb
 build: ingest query query-kv
@@ -26,5 +26,5 @@ push:
 	docker push $(TSDB_DOCKER_REPO)/tsdb-ingest:$(TSDB_TAG)
 	docker tag tsdb-query:$(TSDB_TAG) $(TSDB_DOCKER_REPO)/tsdb-query:$(TSDB_TAG)
 	docker push $(TSDB_DOCKER_REPO)/tsdb-query:$(TSDB_TAG)
-        docker tag tsdb-query-kv:$(TSDB_TAG) $(TSDB_DOCKER_REPO)/tsdb-query-kv:$(TSDB_TAG)
-        docker push $(TSDB_DOCKER_REPO)/tsdb-query-kv:$(TSDB_TAG)
+	docker tag tsdb-query-kv:$(TSDB_TAG) $(TSDB_DOCKER_REPO)/tsdb-query-kv:$(TSDB_TAG)
+	docker push $(TSDB_DOCKER_REPO)/tsdb-query-kv:$(TSDB_TAG)
